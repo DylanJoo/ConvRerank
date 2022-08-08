@@ -1,0 +1,14 @@
+python3 train.py \
+  --model_name_or_path castorini/monot5-small-msmarco-100k \
+  --config_name t5-small \
+  --output_dir checkpoints/conv.monot5 \
+  --train_file data/canard4ir/canard.convir.train.quadruples.top3.jsonl \
+  --eval_file data/canard4ir/canard.convir.sample.quadruples.top3.jsonl \
+  --max_p_seq_length 384 \
+  --max_q_seq_length 128 \
+  --per_device_train_batch_size 16 \
+  --max_steps 100000 \
+  --save_steps 10000 \
+  --eval_steps 10000 \
+  --do_train \
+  --do_eval

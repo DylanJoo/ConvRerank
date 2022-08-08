@@ -1,0 +1,11 @@
+#checkpoint
+checkpoints/
+
+#data
+!data/canard4ir/canard.convir.sample.quadruples.top3.jsonl
+data/canard4ir/
+
+#compile and logging
+__pycache__/
+logs/
+
