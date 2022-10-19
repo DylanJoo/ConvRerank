@@ -2,9 +2,11 @@
 checkpoints/
 
 #data
-data/canard4ir/*
-!data/canard4ir/canard.convir.sample.quadruples.top3.jsonl
+data/
 
+#run
+runs/
+#
 #compile and logging
 __pycache__/
 logs/
