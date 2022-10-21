@@ -32,3 +32,4 @@ bash run_spr.sh rewrite
 e.g.
 bash run_spr.sh utterance
 ```
+3. To construct the denoising dataset, we use t5-base model
