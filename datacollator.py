@@ -32,6 +32,7 @@ class DataCollatorFormonoT5:
                 text_inputs,
                 max_length=self.max_length,
                 truncation=True,
+                padding=True,
                 return_tensors=self.return_tensors
         )
 

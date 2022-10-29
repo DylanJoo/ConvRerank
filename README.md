@@ -22,14 +22,22 @@ python tools/parse_canard.py \
 ```
 You will need a large-enough corpus to answer these questions (e.g. WIKI). In this repo, I used CAST2020 for demonstration (i.e. MSMARCO, TRECCAR).
 
-2. Get sparse retrieval results of (Teacher) and (Student), which I used standard pyserini settingsfor top1000 relevant passages.
+2. Get sparse retrieval results of (Teacher) and (Student)
 
+Used standard pyserini settings for top1000 relevant passages.
 ```
 bash run_spr.sh answer+rewrite 
 bash run_spr.sh rewrite
 
 # The $query_type can be other value that existed in canard.train.csv
-e.g.
 bash run_spr.sh utterance
 ```
-3. To construct the denoising dataset, we use t5-base model
+
+3. Rerank the top1000 relevant passage 
+
+To construct the denoising dataset, we use monot5 (castorini)
+```
+bash run_pre_rerank.sh
+```
+
+4. Constructed convir dataset

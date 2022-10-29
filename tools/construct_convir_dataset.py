@@ -27,9 +27,7 @@ run_teacher = load_runs(args.run_teacher)
 passages = load_collections(dir=args.collections)
 assert len(run_student) == len(run_teacher), "Inconsistent number of queries"
 
-# set seed
 random.seed(123)
-# count = collections.defaultdict(list)
 fout = open(args.output, 'w')
 
 with open(args.topic) as topic:

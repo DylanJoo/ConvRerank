@@ -25,7 +25,7 @@ class monoT5(T5ForConditionalGeneration):
 
         tokenized_tokens = self.tokenizer(tokens, add_special_tokens=False)
         self.targeted_ids = [x for xs in tokenized_tokens.input_ids for x in xs]
-        print("Ready for predict()")
+        print("Ready for predict()", tokens)
 
     def predict(self, batch):
         # Perpare BOS labels
