@@ -4,9 +4,14 @@ from reranker import monoT5
 from torch.utils.data import DataLoader
 from typing import Optional, Union, List, Dict, Any
 from dataclasses import dataclass
-from tools.utils import load_runs, load_collections, load_topics, normalized
 from datasets import Dataset
 from datacollator import DataCollatorFormonoT5
+import socket
+
+if 'cfda' in socket.gethostname():
+    from tools.utils_gcp import load_runs, load_collections, load_topics, normalized
+else:
+    from tools.utils_gcp import load_runs, load_collections, load_topics, normalized
 
 
 if __name__ == '__main__':

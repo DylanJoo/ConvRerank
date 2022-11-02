@@ -45,7 +45,7 @@ def load_collections(path=None, dir=None, candidate_set=None):
     collection_dict = {}
 
     if dir: # load if there are many jsonl files
-        files = [os.path.join(dir, f) for f in os.listdir(dir) if ".json" in f]
+        files = [os.path.join(dir, f) for f in tf.io.gfile.listdir(dir) if ".json" in f]
     else:
         files = [path]
 
