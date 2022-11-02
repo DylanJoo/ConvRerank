@@ -1,7 +1,7 @@
 # baseline reranking model castorini/monot5-base-msmarco (100K)
 python3 passage_reranking.py \
   --run gs://cnclab/cast/runs/cast20.canard.train.answer+rewrite.spr.top1000.trec \
-  --topic data/canard.train.jsonl \
+  --topic gs://cnclab/cast/data/canard.train.jsonl \
   --collection gs://cnclab/cast/collections/cast2020_psg/ \
   --topk 1000 \
   --output_trec runs/cast20.canard.train.answer+rewrite.rerank.top1000.trec \
