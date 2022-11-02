@@ -1,0 +1,8 @@
+# 1. setup the torch docker: 
+# >>> conda activate torch-xla-1.7
+# 2. Install dependicies
+# >>> pip3 install transformers 
+# >>> pip3 install datasets
+# 3. setup torch1.7 TPU with ip addresss below
+export TPU_IP_ADDRESS=$1
+export XRT_TPU_CONFIG="tpu_worker;0;$TPU_IP_ADDRESS:8470"
