@@ -11,3 +11,4 @@ runs/
 __pycache__/
 logs/
 *swp
+archived/

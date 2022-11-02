@@ -1,15 +1,17 @@
+"""
+Convert runs(.trec) into monot5 input
+with the format: Query: <q> Document: <d> Relevant:
+"""
 import argparse
 import collections
 from reranker import monoT5
 from torch.utils.data import DataLoader
-from typing import Optional, Union, List, Dict, Any
-from dataclasses import dataclass
 from datasets import Dataset
 from datacollator import DataCollatorFormonoT5
 import socket
 
 if 'cfda' in socket.gethostname():
-    from tools.utils_gcp import load_runs, load_collections, load_topics, normalized
+    from tools.utils import load_runs, load_collections, load_topics, normalized
 else:
     from tools.utils_gcp import load_runs, load_collections, load_topics, normalized
 
@@ -22,18 +24,10 @@ if __name__ == '__main__':
     parser.add_argument("--topic", type=str, required=True,)
     parser.add_argument("--collection", type=str, required=True,)
     # Reranking conditions
-    parser.add_argument("--output_text", type=str, default="")
+    parser.add_argument("--output", type=str, default="")
     parser.add_argument("--batch_size", type=int, default=16)
-    parser.add_argument("--max_length", type=int, default=512)
     args = parser.parse_args()
 
-
-    # load model
-    # model = monoT5.from_pretrained(args.model_name_or_path)
-    # model.set_tokenizer()
-    # model.set_targets()
-    # model.to(f'cuda:{args.gpu}')
-    # model.eval()
 
     # load triplet
     queries = load_topics(args.topic)
@@ -54,7 +48,7 @@ if __name__ == '__main__':
 
     # data loader
     datacollator = DataCollatorFormonoT5(
-            return_text=False,
+            return_text=True,
     )
     dataloader = DataLoader(
             dataset,
@@ -63,8 +57,8 @@ if __name__ == '__main__':
             collate_fn=datacollator
     )
 
-    fout = open(args.output_text, 'w')
     # output examples (to be inferenced)
+    fout = open(args.output_text, 'w')
     for b, batch in enumerate(dataloader):
         batch_inputs, batch_ids = batch
 
