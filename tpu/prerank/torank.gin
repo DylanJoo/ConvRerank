@@ -1,0 +1,13 @@
+from __gin__ import dynamic_registration
+import tasks  # This imports the task defined in dir1/user_dir/tasks.py.
+from t5x import models
+
+include "/home/g110753140/t5x/t5x/examples/t5/t5_1_0/base.gin"
+include '/home/g110753140/t5x/t5x/configs/runs/infer.gin'
+
+MIXTURE_OR_TASK_NAME = "torank_teacher_sample"
+DROPOUT_RATE = 0.1
+BATCH_SIZE = 128
+TASK_FEATURE_LENGTHS = {"inputs": 512, "targets": 4}
+
+models.EncoderDecoderModel.score_batch.first_logits = True
