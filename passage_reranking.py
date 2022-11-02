@@ -37,7 +37,8 @@ if __name__ == '__main__':
     model = monoT5.from_pretrained(args.model_name_or_path)
     model.set_tokenizer()
     model.set_targets()
-    model.to(f'cuda:{args.gpu}')
+    if torch.cuda.is_available():
+        model.to(f'cuda:{args.gpu}')
     model.eval()
 
     # load triplet
