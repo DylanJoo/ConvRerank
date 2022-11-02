@@ -9,15 +9,16 @@ from transformers.tokenization_utils_base import (
 
 @dataclass
 class DataCollatorFormonoT5:
-    tokenizer: PreTrainedTokenizerBase
+    tokenizer: Union[PreTrainedTokenizerBase] = None
     padding: Union[bool, str, PaddingStrategy] = True
     truncation: Union[bool, str] = True
     max_length: Optional[int] = None
     pad_to_multiple_of: Optional[int] = None
     return_tensors: str = "pt"
     padding: Union[bool, str] = True
-    istrain: Union[bool] = False
     # Spec
+    istrain: Union[bool] = False
+    return_text: Union[bool] = False
     # query_maxlen: Optional[int] = None 
     # doc_maxlen: Optional[int] = None
     # context_maxlen: Optional[int] = None
@@ -28,29 +29,34 @@ class DataCollatorFormonoT5:
         # input
         text_inputs = [f"Query: {batch['query']} Document: {batch['passage']} Relevant:" \
                 for batch in features]
-        inputs = self.tokenizer(
-                text_inputs,
-                max_length=self.max_length,
-                truncation=True,
-                padding=True,
-                return_tensors=self.return_tensors
-        )
-
 
         # qid-pid pairs 
         ids = [(batch['qid'], batch['pid']) for batch in features]
 
-        # labeling (if training)
-        if self.istrain:
-            # labels
-            targets = self.tokenizer(
-                    [text['label'] for text in features],
-                    truncation=True,
-                    return_tensors=self.return_tensors
-            ).input_ids
-            inputs['labels'] = target
+        if self.return_text:
+            return text_inputs, ids
 
-        return inputs, ids
+        else:
+            # input (tokenized)
+            inputs = self.tokenizer(
+                    text_inputs,
+                    max_length=self.max_length,
+                    truncation=True,
+                    padding=True,
+                    return_tensors=self.return_tensors
+            )
+
+            # labeling (if training)
+            if self.istrain:
+                # labels
+                targets = self.tokenizer(
+                        [text['label'] for text in features],
+                        truncation=True,
+                        return_tensors=self.return_tensors
+                ).input_ids
+                inputs['labels'] = target
+
+            return inputs, ids
 
 @dataclass
 class PointwiseConvDataCollatorForT5:
