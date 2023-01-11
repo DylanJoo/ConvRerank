@@ -1,24 +1,21 @@
-# Although there are many ways to inference (for 'pre' re-rank)
-# 
-# As it can be inferenced and reranked with 'passage_ranking.py',
-# Inferencing on TPU will be much more efficient.
-# Therefore, prepare the results and store in gbucket for TPU inferencing
-
-mkdir data/torank/
-
-# teacher results
+# View0 ranked list
 python3 tools/convert_runs_to_monot5.py \
-  --run runs/cast20.canard.train.answer+rewrite.spr.top1000.trec \
-  --topic data/canard.train.jsonl \
-  --collection /tmp2/trec/cast/2020/cast2020_psg \
-  --output data/torank/cast20.canard.train.answer+rewrite.rerank.top1000.trec \
-  --batch_size 1000
+  --run runs/cast20.canard.train.view0.bm25.top1000.trec \
+  --topic data/canard/train.jsonl \
+  --collection /tmp2/jhju/datasets/cast2020/ \
+  --output monot5/cast20.canard.train.view0.rerank.txt
 
-# student results
+# View1 ranked list
 python3 tools/convert_runs_to_monot5.py \
-  --run runs/cast20.canard.train.rewrite.spr.top1000.trec \
-  --topic data/canard.train.jsonl \
-  --collection /tmp2/trec/cast/2020/cast2020_psg \
-  --output data/torank/cast20.canard.train.rewrite.rerank.top1000.trec \
-  --batch_size 1000
+  --run runs/cast20.canard.train.view1.bm25.top1000.trec \
+  --topic data/canard/train.jsonl \
+  --collection /tmp2/jhju/datasets/cast2020/ \
+  --output monot5/cast20.canard.train.view1.rerank.txt
+
+# Viewx ranked list
+python3 tools/convert_runs_to_monot5.py \
+  --run runs/cast20.canard.train.viewx.bm25.top1000.trec \
+  --topic data/canard/train.jsonl \
+  --collection /tmp2/jhju/datasets/cast2020/ \
+  --output monot5/cast20.canard.train.viewx.rerank.txt
 

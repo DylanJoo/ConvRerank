@@ -55,8 +55,8 @@ def parse_quac(dir):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-canard", "--path_canard", default="train.json", type=str)
-    parser.add_argument("-output", "--path_output", type=str)
+    parser.add_argument("-canard", "--path_canard", default="data/canard/train.json", type=str)
+    parser.add_argument("-output", "--path_output", default='data/canard/train.jsonl', type=str)
     parser.add_argument("-quac", "--dir_quac", default="data/quac/", type=str)
     args = parser.parse_args()
 

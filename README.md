@@ -1,92 +1,64 @@
+# Weakly-supervised training data
 
-0. Inititate TPU-VM and Google VM 
-See the [instructions]() frrom google for detail.
+## Step1-rerank
+In this step, we need to generate three views of ranked list based on 
+0. Manually reformulated query
+1. Manually reformulated query + ANswer
+x. Utterance
 
-1. In this document, we use the T5X for example, which is built by JAX.
-First install the following requirement.
-
-- Activate TPU-VM, you will enter the TPU-VM
+### Raw training data 
+1. Download canard dataset (training set)
 ```
-TPU_NAME=<YOUR TPU-VM NAME> 
-ZONE=<YOUR TPU REGION> (e.g. us-central1-f)
-gcloud alpha compute tpus tpu-vm ssh ${TPU_NAME} --zone=${ZONE}
-```
-
-- Install JAX for T5X
-```
-pip install "jax[tpu]>=0.2.16" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html~
-git clone --branch=main https://github.com/google-research/t5x
-cd t5x
-python3 -m pip install -e '.[tpu]' -f \
-          https://storage.googleapis.com/jax-releases/libtpu_releases.html
-
-# the permission will be denied in the begginning
-gcloud auth application-default login
+mkdir canard
+Download link: https://sites.google.com/view/qanta/projects/canard
 ```
 
-2. Modified the 't5x/t5x/models.py
-
-- Replace the 'score_batch()' functions, and change the output scores with logits (of true/false)
+2. Download canard dataset (training set and validation set)
 ```
-# (Option1) you can directly change the t5x repo's contents by
-cp models.py t5x/t5x/models.py
+mkdir quac
+Downlaod link: https://s3.amazonaws.com/my89public/quac/train_v0.2.json
+Downlaod link: https://s3.amazonaws.com/my89public/quac/val_v0.2.json
 ```
-Since T5X is constantly updating, you can accordinly refine the codes like
-```python
 
-  def score_batch(
-      self,
-      params: PyTreeDef,
-      batch: Mapping[str, jnp.ndarray],
-      return_intermediates: bool = False,
-      first_logits: bool = False,
-  ) -> Union[jnp.ndarray, Tuple[jnp.ndarray, Mapping[str, Any]]]:
-    """Compute log likelihood score on a batch."""
-    weights = batch['decoder_loss_weights']
-    target_tokens = batch['decoder_target_tokens']
+3. Parsed and preprocess (and fix) the canard training set into data/canard/train.jsonl.
+```
+python3 tools/parse_canard.py 
+```
 
-    if return_intermediates:
-      logits, modified_variables = self._compute_logits(
-          params=params, batch=batch, mutable=['intermediates'])
+4. Generated the first-stage ranked list using BM25 search
+```
+bash run_spr.sh
+```
 
-      # Inside self.module, we called nn.Module.sow to track various
-      # intermediate values. We extract them here.
-      intermediates = flax_core.unfreeze(
-          modified_variables.get('intermediates', {}))
+### Convert the runs into monot5 input
+```
+bash prepare_ranking_sources.sh
+```
 
-      # Track per-token labels and loss weights as well. These are not
-      # intermediate values of logit computation, so we manually add them here.
-      intermediates.setdefault('decoder', {})
-      intermediates['decoder']['target_tokens'] = (target_tokens,)
-      intermediates['decoder']['loss_weights'] = (weights,)
-      # Note that the values are singleton tuples. This is because values inside
-      # `intermediates` should be tuples tracking all instantiations of a value.
-      # These values each have just one instantiation, hence singletons.
-    else:
-      logits = self._compute_logits(params, batch)  # type: jnp.ndarray
+### monoT5 reranking
+Followed the monoT5 paper, you can either using huggingface or GCP+TPU to get the results
 
-    # Purposefully don't use config.z_loss because that term is for training
-    # stability and shouldn't affect our reported scores.
+## Step2-constrat view pseudo labeling
 
-    ######### ######### Change the logits output ######### #########
-    if first_logits:
-        sequence_scores = logits[:, 0:1, target_tokens[0, :]] # true/false tokens
+1. Using the proposed method to generate the pseudo conversational query passage pairs
+```
+TBD
+```
 
-    ######### ######### ######### #########
+## Evaluation 
 
-    token_scores = -losses.cross_entropy_with_logits(
-        logits,
-        common_utils.onehot(
-            target_tokens[:, 0:1], logits.shape[-1], on_value=1, off_value=0),
-        z_loss=0.0)[0] * weights
-
-    sequence_scores = token_scores.sum(-1)
-
-    if return_intermediates:
-      return sequence_scores, intermediates
-
-    return sequence_scores
-
-
+1. Download CAsT 2020
+```
+mkdir cast2020
+```
+2. Download ORConvQA dataset (dev set only)
+```
+mkdir orconqa
+Download link: https://ciir.cs.umass.edu/downloads/ORConvQA/preprocessed/test.txt
+Download link: https://ciir.cs.umass.edu/downloads/ORConvQA/all_blocks.txt.gz
+```
+5. 
+```
+python3 tools/parse_canard.py 
 ```
 
