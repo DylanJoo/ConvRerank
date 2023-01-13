@@ -4,6 +4,7 @@ checkpoints/
 #data
 data/
 monot5/
+monot5-probs/
 
 #run
 runs/

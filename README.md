@@ -31,12 +31,20 @@ bash run_spr.sh
 ```
 
 ### Convert the runs into monot5 input
+Converiting the training triplet into
 ```
+# Input format: Query: <q> Docuemnt: <d> Relevant: 
+# Output format: true/false
 bash prepare_ranking_sources.sh
 ```
 
 ### monoT5 reranking
-Followed the monoT5 paper, you can either using huggingface or GCP+TPU to get the results
+Followed the monoT5 paper, you can either using huggingface or GCP+TPU to get the results. 
+Constructed the environments (See detail in [T5-for-IR](#))
+```
+mkdir monot5-probs
+bash fetch_probs.sh
+```
 
 ## Step2-constrat view pseudo labeling
 
@@ -60,5 +68,18 @@ Download link: https://ciir.cs.umass.edu/downloads/ORConvQA/all_blocks.txt.gz
 5. 
 ```
 python3 tools/parse_canard.py 
+```
+
+
+
+## Note
+To admit the google account in the local boto and gcloud authentication.
+
+```
+remove the old boto folder, which contained the previous credecential
+rm ~/.boto
+
+# new a config of glcoud by the commands
+
 ```
 

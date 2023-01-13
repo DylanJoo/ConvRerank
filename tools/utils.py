@@ -22,6 +22,7 @@ def load_topics(path):
             data_dict[topic_turn_id] = data
     return data_dict
 
+            
 def load_runs(path, output_score=False): # support .trec file only
     run_dict = collections.defaultdict(list)
     with open(path, 'r') as f:
