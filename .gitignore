@@ -5,6 +5,8 @@ checkpoints/
 data/
 monot5/
 monot5-probs/
+## exception
+!./data/canard4ir/canard4ir.train.convrerank.stats
 
 #run
 runs/

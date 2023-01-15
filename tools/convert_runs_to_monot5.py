@@ -25,30 +25,25 @@ def convert_runs_to_monot5(args):
     # prepare dataset
     data = collections.defaultdict(list)
     for qid in runs:
-        query_text = queries[qid]
+        query = queries[qid]
         for pid in runs[qid]:
             data['qid'].append(qid)
             data['pid'].append(pid)
-            data['query'].append(query_text['rewrite'])
+            data['rewrite'].append(query['rewrite'])
+            data['manual'].append(query['manual'])
+            data['utterance'].append(query['utterance'])
+            data['context'].append(query['history_utterances'][-args.window_size:])
             data['passage'].append(normalized(passages[pid]))
 
     dataset = Dataset.from_dict(data)
 
-    # data loader
-    # datacollator = DataCollatorFormonoT5(
-    #         return_text=True,
-    # )
-    # dataloader = DataLoader(
-    #         dataset,
-    #         batch_size=args.batch_size,
-    #         shuffle=False, # cannot be shuffle
-    #         collate_fn=datacollator
-    # )
-
     # output examples (to be inferenced)
     with open(args.output, 'w') as f:
         for data in tqdm(dataset):
-            example = f"Query: {data['query']} Document: {data['passage']} Relevant:"
+            if args.conversational:
+                example = f"Query: {data['utterance']} Context: {data['context']} Document: {data['passage']} Relevant:"
+            else:
+                example = f"Query: {data['rewrite']} Document: {data['passage']} Relevant:"
             f.write(example+'\n')
 
 
@@ -61,7 +56,9 @@ if __name__ == '__main__':
     parser.add_argument("--collection", type=str, required=True,)
     # Reranking conditions
     parser.add_argument("--output", type=str, default="")
-    # parser.add_argument("--batch_size", type=int, default=16)
+    # Conversataion conditions
+    parser.add_argument("--conversational", default=False, action='store_true')
+    parser.add_argument("--window_size", type=int, default=3)
     args = parser.parse_args()
 
     convert_runs_to_monot5(args)

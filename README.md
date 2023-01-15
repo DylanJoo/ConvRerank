@@ -41,34 +41,61 @@ bash prepare_ranking_sources.sh
 ### monoT5 reranking
 Followed the monoT5 paper, you can either using huggingface or GCP+TPU to get the results. 
 Constructed the environments (See detail in [T5-for-IR](#))
+
 ```
 mkdir monot5-probs
 bash fetch_probs.sh
 ```
 
-## Step2-constrat view pseudo labeling
+## Prposed pseudo labeling (conversational hard negative) and train on TPU
 
 1. Using the proposed method to generate the pseudo conversational query passage pairs
+```
+mkdir data/canard4ir
+# run the 
+bash run_create_convir_dataset.sh
+# or 
+python3 tools/construct_convir_dataset.py \
+  --topic data/canard/train.jsonl \
+  --collections <corpus path>
+  --run0 runs/cast20.canard.train.view0.monot5.top1000.trec \
+  --run1 runs/cast20.canard.train.view1.monot5.top1000.trec \
+  --output data/canard4ir/canard4ir.train.convrerank.txt \
+  --window_size 3 \
+  --topk_pool 200 \
+  --topk_positive 3 \
+  --n 30 \
+```
+2. Training with the weakly-supervsied dataset using TPU or GPU
+
 ```
 TBD
 ```
 
-## Evaluation 
-
+## Evaluation on CAsT 2020
 1. Download CAsT 2020
+You may find out the download instructions (with preprocessing) in the [official CAsT 2020 repo](#).
+Then, parse the evaluation topics into jsonl
 ```
-mkdir cast2020
+python3 tools/parse_cast2020.py
 ```
-2. Download ORConvQA dataset (dev set only)
+2. First-stage retrieval using CQE
+We have inferenced several dense retrieval baseline in this repo, including the top1000 passage ranklist which are in [cast2020 runs](runs/cast2020/)
+3. Convert the runs into monot5 input
 ```
-mkdir orconqa
-Download link: https://ciir.cs.umass.edu/downloads/ORConvQA/preprocessed/test.txt
-Download link: https://ciir.cs.umass.edu/downloads/ORConvQA/all_blocks.txt.gz
+# run the bash script
+bash prepare_cast2020_evaluation.sh
+# or 
+python3 tools/convert_runs_to_monot5.py \
+  --run runs/cast2020.eval.cqe.trec \
+  --topic data/canard/train.jsonl \
+  --collection <corpus path> \
+  --output monot5/cast2020.eval.cqe.rerank.txt 
 ```
-5. 
-```
-python3 tools/parse_canard.py 
-```
+4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [bucket](#).
+
+## Evaluation on ORConvQA
+1. Download ORConvQA dataset (dev set only)
 
 
 
