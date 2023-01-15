@@ -76,6 +76,9 @@ TBD
 1. Download CAsT 2020
 You may find out the download instructions (with preprocessing) in the [official CAsT 2020 repo](#).
 Then, parse the evaluation topics into jsonl
+- Qrels
+- Topics
+- Collections (MARCO, TRECCR)
 ```
 python3 tools/parse_cast2020.py
 ```
@@ -96,8 +99,9 @@ python3 tools/convert_runs_to_monot5.py \
 
 ## Evaluation on ORConvQA
 1. Download ORConvQA dataset (dev set only)
-
-
+```
+TBD
+```
 
 ## Note
 To admit the google account in the local boto and gcloud authentication.

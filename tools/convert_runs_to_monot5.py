@@ -41,7 +41,8 @@ def convert_runs_to_monot5(args):
     with open(args.output, 'w') as f:
         for data in tqdm(dataset):
             if args.conversational:
-                example = f"Query: {data['utterance']} Context: {data['context']} Document: {data['passage']} Relevant:"
+                context = "|".join(data['context']).strip()
+                example = f"Query: {data['utterance']} Context: {context} Document: {data['passage']} Relevant:"
             else:
                 example = f"Query: {data['rewrite']} Document: {data['passage']} Relevant:"
             f.write(example+'\n')
@@ -58,7 +59,7 @@ if __name__ == '__main__':
     parser.add_argument("--output", type=str, default="")
     # Conversataion conditions
     parser.add_argument("--conversational", default=False, action='store_true')
-    parser.add_argument("--window_size", type=int, default=3)
+    parser.add_argument("--window_size", type=int, default=0)
     args = parser.parse_args()
 
     convert_runs_to_monot5(args)
