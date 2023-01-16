@@ -96,6 +96,8 @@ def load_collections(path=None, dir=None, candidate_set=None):
 #         return collection_dict
 
 def doc_pool_random_sampling(pool, n):
+    if len(pool) == 0:
+        return []
     try:
         return random.sample(pool, n)
     except:
