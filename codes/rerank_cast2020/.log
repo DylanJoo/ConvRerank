@@ -1,0 +1,5 @@
+input: \t output: convrerank/rerank_cast2020/ablation_from10k/cast2020.eval.cqe.conv.rerank.txt
+input: \t output: convrerank/rerank_cast2020/ablation_singleview0/cast2020.eval.cqe.conv.rerank.txt
+input: \t output: convrerank/rerank_cast2020/ablation_singleview1/cast2020.eval.cqe.conv.rerank.txt
+input: \t output: 
+input: \t output: 

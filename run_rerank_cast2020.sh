@@ -16,16 +16,16 @@ python3 tools/rerank_runs.py \
     --prefix conv-monot5 
 
 ## ablations study 
-# for ablation in from10k singleview0 singleview1 reverseview;do
-    # python3 tools/rerank_runs.py \
-    #     --baseline runs/cast2020/cast2020.eval.cqe.trec \
-    #     --scores monot5-probs/cast2020.eval.cqe.conv.rerank.ablation_${ablation}.probs \
-    #     --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.ablation_${ablation}.trec \
-    #     --topk 1000 \
-    #     --prefix conv-monot5-ablation
-# done
+for ablation in from10k singleview0 singleview1 reverseview dev;do
+    python3 tools/rerank_runs.py \
+        --baseline runs/cast2020/cast2020.eval.cqe.trec \
+        --scores monot5-probs/cast2020.eval.cqe.conv.rerank.ablation_${ablation}.probs \
+        --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.ablation_${ablation}.trec \
+        --topk 1000 \
+        --prefix conv-monot5-ablation
+done
 
-## ablation study (on monot5)
+## ablation study (zeroshot)
 # for ablation in t5-cqe cqe;do
 #     python3 tools/rerank_runs.py \
 #         --baseline runs/cast2020/cast2020.eval.${ablation}.trec \
@@ -34,3 +34,18 @@ python3 tools/rerank_runs.py \
 #         --topk 1000 \
 #         --prefix monot5-ablation
 # done
+
+## ablation study (large)
+# python3 tools/rerank_runs.py \
+#     --baseline runs/cast2020/cast2020.eval.cqe.trec \
+#     --scores monot5-probs/cast2020.eval.cqe.conv.rerank.ablation_large.probs \
+#     --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.ablation_large.trec \
+#     --topk 1000 \
+#     --prefix conv-monot5-large
+#
+# python3 tools/rerank_runs.py \
+#     --baseline runs/cast2020/cast2020.eval.cqe.trec \
+#     --scores monot5-probs/cast2020.eval.cqe.rerank.ablation_large.probs \
+#     --reranked runs/cast2020/cast2020.eval.cqe.rerank.ablation_large.trec \
+#     --topk 1000 \
+#     --prefix monot5-large
