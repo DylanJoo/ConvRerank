@@ -41,7 +41,7 @@ def convert_runs_to_monot5(args):
     with open(args.output, 'w') as f:
         for data in tqdm(dataset):
             if args.conversational:
-                context = "|".join(data['context']).strip()
+                context = " | ".join(data['context']).strip()
                 example = f"Query: {data['utterance']} Context: {context} Document: {data['passage']} Relevant:"
             else:
                 example = f"Query: {data['rewrite']} Document: {data['passage']} Relevant:"

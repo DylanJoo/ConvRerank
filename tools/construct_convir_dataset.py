@@ -36,9 +36,9 @@ def singleview_pseudo_labeling(args):
             ## w: the window size of historical utterance
             a = normalized(query['answer'])
             q = normalized(query['utterance'])
-            c_t = "|".join(query['history_topic'])
+            c_t = " | ".join(query['history_topic'])
             c_u = query['history_utterances'][-args.window_size:]
-            c = normalized("|".join([c_t] + c_u))
+            c = normalized(" | ".join([c_t] + c_u))
 
             for psg_id_pos, psg_id_neg in zip(psg_ids_pos, psg_ids_neg):
                 d_pos = normalized(passages[psg_id_pos])
@@ -89,9 +89,9 @@ def dualview_pseudo_labeling(args):
             ## w: the window size of historical utterance
             a = normalized(query['answer'])
             q = normalized(query['utterance'])
-            c_t = "|".join(query['history_topic'])
+            c_t = " | ".join(query['history_topic'])
             c_u = query['history_utterances'][-args.window_size:]
-            c = normalized("|".join([c_t] + c_u))
+            c = normalized(" | ".join([c_t] + c_u))
 
             for psg_id_pos, psg_id_neg in zip(psg_ids_pos, psg_ids_neg):
                 d_pos = normalized(passages[psg_id_pos])

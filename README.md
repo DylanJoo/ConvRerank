@@ -74,7 +74,7 @@ TBD
 
 ## Evaluation on CAsT 2020
 1. Download CAsT 2020
-You may find out the download instructions (with preprocessing) in the [official CAsT 2020 repo](#).
+You may find out the download instructions (with preprocessing) in the [official CAsT repo](#).
 Then, parse the evaluation topics into jsonl
 - Qrels
 - Topics
@@ -97,10 +97,15 @@ python3 tools/convert_runs_to_monot5.py \
 ```
 4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [bucket](#).
 
-## Evaluation on ORConvQA
-1. Download ORConvQA dataset (dev set only)
+## Evaluation on CAsT 2019
+1. Download CAsT 2019
+You may find out the download files in [official CAsT repo](#)
+Then, parse the evaluation topics into jsonl.
+- Qrels
+- Topics
+- COllections (MARCO, TRECCAR, WAPO)
 ```
-TBD
+pathon3 tools/parse_cast2019.py
 ```
 
 ## Note

@@ -96,7 +96,10 @@ def load_collections(path=None, dir=None, candidate_set=None):
 #         return collection_dict
 
 def doc_pool_random_sampling(pool, n):
+    if n == 0:
+        return []
     if len(pool) == 0:
+        print("The pool is exactly zero")
         return []
     try:
         return random.sample(pool, n)
