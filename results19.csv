@@ -1,0 +1,19 @@
+Run, nDCG@3, nDCG@5, nDCG@10, nDCG@1000
+eval.cqe.conv.rerank.j20.trec,0.5026,0.4885,0.4760,0.5936
+eval.cqe.conv.rerank.reverseview.trec,0.4662,0.4588,0.4458,0.5689
+eval.cqe.conv.rerank.singleview0.trec,0.4560,0.4388,0.4203,0.5495
+eval.cqe.conv.rerank.singleview1.trec,0.4557,0.4505,0.4311,0.5620
+eval.cqe.conv.rerank.t10.trec,0.4785,0.4712,0.4505,0.5744
+eval.cqe.conv.rerank.t20.trec,0.4886,0.4859,0.4654,0.5839
+eval.cqe.conv.rerank.t3.trec,0.4659,0.4643,0.4411,0.5660
+eval.cqe.conv.rerank.t30.trec,0.4885,0.4776,0.4599,0.5828
+eval.cqe.rerank.trec,0.5337,0.5307,0.5202,0.6142
+eval.cqe.trec,0.4806,0.4684,0.4469,0.5677
+eval.cqe.zs.rerank.trec,0.4444,0.4434,0.4312,0.5653
+eval.manual.dpr.trec,0.5572,0.5326,0.5145,0.6246
+eval.t5-cqe.conv.rerank.trec,0.4873,0.4852,0.4644,0.5969
+eval.t5-cqe.rerank.trec,0.5110,0.5063,0.5001,0.6170
+eval.t5-cqe.trec,0.5445,0.5247,0.5064,0.6154
+eval.t5-dpr.conv.rerank.trec,0.5121,0.5009,0.4851,0.5946
+eval.t5-dpr.rerank.trec,0.4982,0.4967,0.4910,0.5985
+eval.t5-dpr.trec,0.5286,0.5028,0.4834,0.5908

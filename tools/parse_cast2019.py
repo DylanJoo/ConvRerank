@@ -5,12 +5,14 @@ import os
 import re
 from utils import load_collections
 
-def convert_trecweb_to_jsonl(path_eval, path_manual, path_output, path_corpus):
-    # load manual rewritten query manually
+def convert_trecweb_to_jsonl(path_eval, path_manual, path_automatic, path_output, path_corpus=None):
     data = json.load(open(path_eval, 'r'))
+    # load manual and automatic rewritten query manually (first rewrite query using cqr)
+    automatic = dict(tuple(data.strip().split('\t')) \
+            for data in open(path_automatic, 'r').readlines())
     manual = dict(tuple(data.strip().split('\t')) \
             for data in open(path_manual, 'r').readlines())
-    collections = load_collections(dir=path_corpus)
+    # collections = load_collections(dir=path_corpus)
 
     with open(path_output, 'w') as f:
         for topic_i, topic in enumerate(data):
@@ -27,13 +29,16 @@ def convert_trecweb_to_jsonl(path_eval, path_manual, path_output, path_corpus):
 
                 # information
                 utterance = turn['raw_utterance'].strip()
+                automatic_rewritten = automatic[f"{topic_id}_{turn_id}"]
                 manual_rewritten = manual[f"{topic_id}_{turn_id}"]
                 
                 # output
                 f.write(json.dumps({
                     'id': f"{topic_id}_{turn_id}",
                     'utterance': utterance,
-                    'manual': manual_rewritten.
+                    'rewrite': automatic_rewritten,
+                    'manual': manual_rewritten,
+                    'history_responses': "",
                     'history_utterances': history['utterances']
                 }) +'\n')
 
@@ -42,10 +47,13 @@ def convert_trecweb_to_jsonl(path_eval, path_manual, path_output, path_corpus):
 
 if __name__ == '__main__':
 
+    # note that the corpus "wapo" was removed in qrels
+    # so, for simplicity, we use the same corpus for cast2019 and cast2020
     convert_trecweb_to_jsonl(
             path_eval='data/cast2019/evaluation_topics_v1.0.json',
             path_manual='data/cast2019/evaluation_topics_annotated_resolved_v1.0.tsv',
+            path_automatic='data/cast2019/cast2019.eval.rewrite.tsv',
             path_output='data/cast2019/cast2019.eval.jsonl',
-            path_corpus='/tmp2/jhju/datasets/cast2019/'
+            path_corpus='/tmp2/jhju/datasets/cast2020/'
     )
 

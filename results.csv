@@ -1,4 +1,7 @@
 Run, nDCG@3, nDCG@5, nDCG@10, nDCG@1000
+eval.cqe.conv.rerank.3B.trec,0.4636,0.4548,0.4517,0.5481
+eval.cqe.conv.rerank.from0k.trec,0.3405,0.3371,0.3266,0.4767
+eval.cqe.conv.rerank.from10k.trec,0.3475,0.3447,0.3257,0.4676
 eval.cqe.conv.rerank.j20.trec,0.3379,0.3419,0.3390,0.4786
 eval.cqe.conv.rerank.large.trec,0.4208,0.4087,0.3944,0.5143
 eval.cqe.conv.rerank.reverseview.trec,0.3844,0.3604,0.3466,0.4811
@@ -8,6 +11,7 @@ eval.cqe.conv.rerank.t10.trec,0.3779,0.3663,0.3463,0.4838
 eval.cqe.conv.rerank.t20.trec,0.3854,0.3799,0.3628,0.4920
 eval.cqe.conv.rerank.t3.trec,0.3788,0.3634,0.3440,0.4789
 eval.cqe.conv.rerank.t30.trec,0.3891,0.3785,0.3636,0.4930
+eval.cqe.rerank.3B.trec,0.4055,0.3971,0.3879,0.5053
 eval.cqe.rerank.large.trec,0.3975,0.3873,0.3691,0.4946
 eval.cqe.rerank.trec,0.3588,0.3462,0.3304,0.4691
 eval.cqe.trec,0.3416,0.3288,0.3110,0.4532

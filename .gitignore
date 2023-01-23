@@ -9,7 +9,7 @@ monot5-probs/
 !./data/canard4ir/canard4ir.train.convrerank.stats
 
 #run
-runs/
+runs/rerank_step1
 
 #compile and logging
 __pycache__/

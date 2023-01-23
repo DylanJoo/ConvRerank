@@ -1,4 +1,4 @@
-mkdir -p monot5
+mkdir -p monot5/cast2020/
 # convert to monot5 (ablation)
 # for first_stage in cqe t5-cqe t5-dpr;do
 #     run=runs/cast2020/cast2020.eval.${first_stage}.trec
@@ -18,6 +18,6 @@ for first_stage in cqe t5-cqe t5-dpr;do
       --run $run \
       --topic data/cast2020/cast2020.eval.jsonl \
       --collection /tmp2/jhju/datasets/cast2020 \
-      --output monot5/${file/trec/conv.rerank\.txt} \
+      --output monot5/cast2020/${file/trec/conv.rerank\.txt} \
       --conversational
 done
