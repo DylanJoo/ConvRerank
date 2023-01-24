@@ -2,11 +2,14 @@
 checkpoints/
 
 #data
-data/
+data/canard/
+data/canard4ir/
+# data/cast2019/
+# data/cast2020/
+data/orconvqa/
+quac/
 monot5/
 monot5-probs/
-## exception
-!./data/canard4ir/canard4ir.train.convrerank.stats
 
 #run
 runs/rerank_step1
