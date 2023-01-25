@@ -17,24 +17,24 @@ python3 tools/rerank_runs.py \
     --prefix conv-monot5 
 
 # Main-B: View
-# for view in singleview0 singleview1 reverseview;do
-#     python3 tools/rerank_runs.py \
-#         --baseline runs/cast2020/cast2020.eval.cqe.trec \
-#         --scores monot5-probs/rerank_cast2020/ablation_views/$view.probs \
-#         --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$view.trec \
-#         --topk 1000 \
-#         --prefix conv-monot5 
-# done
+for view in singleview0 singleview1 reverseview;do
+    python3 tools/rerank_runs.py \
+        --baseline runs/cast2020/cast2020.eval.cqe.trec \
+        --scores monot5-probs/rerank_cast2020/ablation_$view/cast2020.eval.cqe.conv.rerank.txt.probs \
+        --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$view.trec \
+        --topk 1000 \
+        --prefix conv-monot5 
+done
 
 # Main-C: TopK
-# for topk in t3 t10 t20 t30 j20;do
-#     python3 tools/rerank_runs.py \
-#         --baseline runs/cast2020/cast2020.eval.cqe.trec \
-#         --scores monot5-probs/rerank_cast2020/cast2020.eval.cqe.conv.rerank.$topk.txt.probs \
-#         --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$topk.trec \
-#         --topk 1000 \
-#         --prefix conv-monot5 
-# done
+for topk in t3 t10 t20 t30 j20;do
+    python3 tools/rerank_runs.py \
+        --baseline runs/cast2020/cast2020.eval.cqe.trec \
+        --scores monot5-probs/rerank_cast2020/cast2020.eval.cqe.conv.rerank.$topk.txt.probs \
+        --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$topk.trec \
+        --topk 1000 \
+        --prefix conv-monot5 
+done
 
 # Ablation-A: different first-stage candidates
 for first_stage in t5-cqe t5-dpr;do
@@ -66,22 +66,31 @@ for first_stage in cqe t5-cqe t5-dpr;do
 done
 
 # Ablation-C: scaling model size
-for model_size in large 3B;do
-    # Convrerank
-    python3 tools/rerank_runs.py \
-        --baseline runs/cast2020/cast2020.eval.cqe.trec \
-        --scores monot5-probs/rerank_cast2020/ablation_$model_size/cast2020.eval.cqe.conv.rerank.txt.probs \
-        --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$model_size.trec \
-        --topk 1000 \
-        --prefix conv-monot5 
-    # monot5
-    python3 tools/rerank_runs.py \
-        --baseline runs/cast2020/cast2020.eval.cqe.trec \
-        --scores monot5-probs/rerank_cast2020/ablation_$model_size/cast2020.eval.cqe.rerank.txt.probs \
-        --reranked runs/cast2020/cast2020.eval.cqe.rerank.$model_size.trec \
-        --topk 1000 \
-        --prefix monot5 
-done
+# for model_size in large 3B;do
+#     # Convrerank
+#     python3 tools/rerank_runs.py \
+#         --baseline runs/cast2020/cast2020.eval.cqe.trec \
+#         --scores monot5-probs/rerank_cast2020/ablation_$model_size/cast2020.eval.cqe.conv.rerank.txt.probs \
+#         --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.$model_size.trec \
+#         --topk 1000 \
+#         --prefix conv-monot5 
+#     # monot5
+#     python3 tools/rerank_runs.py \
+#         --baseline runs/cast2020/cast2020.eval.cqe.trec \
+#         --scores monot5-probs/rerank_cast2020/ablation_$model_size/cast2020.eval.cqe.rerank.txt.probs \
+#         --reranked runs/cast2020/cast2020.eval.cqe.rerank.$model_size.trec \
+#         --topk 1000 \
+#         --prefix monot5 
+# done
+
+# Ablation-D: Convrerank with window
+# Convrerank
+python3 tools/rerank_runs.py \
+    --baseline runs/cast2020/cast2020.eval.cqe.trec \
+    --scores monot5-probs/rerank_cast2020/ablation_window8/cast2020.eval.cqe.conv.rerank.t20.txt.probs \
+    --reranked runs/cast2020/cast2020.eval.cqe.conv.rerank.window8.trec \
+    --topk 1000 \
+    --prefix conv-monot5 
 
 # Ablation-D: different warm up stage
 # for warmup in from10k from0k;do

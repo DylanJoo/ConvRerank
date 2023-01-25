@@ -32,7 +32,13 @@ def convert_runs_to_monot5(args):
             data['rewrite'].append(query['rewrite'])
             data['manual'].append(query['manual'])
             data['utterance'].append(query['utterance'])
-            data['context'].append(query['history_utterances'][-args.window_size:])
+            if args.preserved_turns>0: # truncated windows
+                data['context'].append(
+                        query['history_utterances'][:args.preserved_turns] + \
+                        query['history_utterances'][-(args.window_size-args.preserved_turns):]
+                )
+            else:
+                data['context'].append(query['history_utterances'][-args.window_size:])
             data['passage'].append(normalized(passages[pid]))
 
     dataset = Dataset.from_dict(data)
@@ -61,6 +67,7 @@ if __name__ == '__main__':
     # Conversataion conditions
     parser.add_argument("--conversational", default=False, action='store_true')
     parser.add_argument("--window_size", type=int, default=0)
+    parser.add_argument("--preserved_turns", type=int, default=0)
     args = parser.parse_args()
 
     convert_runs_to_monot5(args)
