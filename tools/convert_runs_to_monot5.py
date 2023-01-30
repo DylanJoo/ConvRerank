@@ -1,24 +1,13 @@
-"""
-Convert runs(.trec) into monot5 input
-with the format: Query: <q> Document: <d> Relevant:
-"""
 import argparse
 from tqdm import tqdm
 import collections
-from torch.utils.data import DataLoader
 from datasets import Dataset
-import socket
-
-if 'cfda' in socket.gethostname():
-    from utils import load_runs, load_collections, load_topics, normalized
-else:
-    from utils_gcp import load_runs, load_collections, load_topics, normalized
-
+from utils import load_topics, load_collections, load_runs, normalized
 
 def convert_runs_to_monot5(args):
 
     # load triplet
-    queries = load_topics(args.topic)
+    queries = load_topics(args.topics)
     passages = load_collections(dir=args.collection)
     runs = load_runs(args.run)
 
@@ -32,26 +21,34 @@ def convert_runs_to_monot5(args):
             data['rewrite'].append(query['rewrite'])
             data['manual'].append(query['manual'])
             data['utterance'].append(query['utterance'])
-            if args.preserved_turns>0: # truncated windows
-                data['context'].append(
-                        query['history_utterances'][:args.preserved_turns] + \
+            if args.preserved_turns>0 and len(query['history_utterances']) > args.window_size:
+                context = query['history_utterances'][:args.preserved_turns] + \
                         query['history_utterances'][-(args.window_size-args.preserved_turns):]
-                )
             else:
-                data['context'].append(query['history_utterances'][-args.window_size:])
-            data['passage'].append(normalized(passages[pid]))
+                context = query['history_utterances'][-args.window_size:]
+            if args.add_topic and query['topic'] != '':
+                context = [query['topic']] + context
+            data['context'].append(context)
+            try:
+                data['passage'].append(normalized(passages[pid]))
+            except:
+                data['passage'].append("")
 
     dataset = Dataset.from_dict(data)
 
     # output examples (to be inferenced)
     with open(args.output, 'w') as f:
         for data in tqdm(dataset):
-            if args.conversational:
-                sep_token = " <extra_id_10> "
-                context = sep_token.join(data['context']).strip()
-                example = f"Query: {data['utterance']} Context: {context} Document: {data['passage']} Relevant:"
+            if args.conversational: 
+                if len(data['context'])>0:
+                    sep_token = " <extra_id_10> "
+                    context = sep_token.join(data['context']).strip()
+                    example = f"Query: {data['utterance']} Context: {context} Document: {data['passage']} Relevant:"
+                else:
+                    example = f"Query: {data['utterance']} Document: {data['passage']} Relevant:"
             else:
-                example = f"Query: {data['rewrite']} Document: {data['passage']} Relevant:"
+                query_input = data[f'args.query_input']
+                example = f"Query: {query_input} Document: {data['passage']} Relevant:"
             f.write(example+'\n')
 
 
@@ -60,14 +57,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # Load triplet
     parser.add_argument("--run", type=str, required=True,)
-    parser.add_argument("--topic", type=str, required=True,)
+    parser.add_argument("--topics", type=str, required=True,)
     parser.add_argument("--collection", type=str, required=True,)
+    parser.add_argument("--query_input", type=str, default='rewrite')
     # Reranking conditions
     parser.add_argument("--output", type=str, default="")
     # Conversataion conditions
     parser.add_argument("--conversational", default=False, action='store_true')
     parser.add_argument("--window_size", type=int, default=0)
     parser.add_argument("--preserved_turns", type=int, default=0)
+    parser.add_argument("--add_topic", default=False, action='store_true')
     args = parser.parse_args()
 
     convert_runs_to_monot5(args)

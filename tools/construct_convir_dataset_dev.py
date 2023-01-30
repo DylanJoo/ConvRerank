@@ -44,7 +44,7 @@ def dualview_pseudo_labeling_dev(args):
             # if positive pool is 0 or small --> (1) View1 is wrong (2*) View0 is wrong 
             if len(positive_pool) == 0:
                 flag=1
-                positive_pool = ranklist_view1[:args.topk_sample]
+                positive_pool = ranklist_view0[:args.topk_sample]
 
             # sampling positives and negatives, n is the number of triplets for each topic
             psg_ids_pos = doc_pool_random_sampling(positive_pool, n)

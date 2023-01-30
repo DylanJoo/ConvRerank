@@ -11,12 +11,12 @@ def analyze_by_turn(args):
     with open(args.runx, 'r') as f:
         lines = [tuple(line.split('\t')) for line in f.readlines()]
         runx = dict(lines)
-    assert len(run0) == len(runx), 'inconsistent length'
+    assert len(run0) == len(runx), f'inconsistent length, len(run0) and len(runx)'
 
     with open(args.runy, 'r') as f:
         lines = [tuple(line.split('\t')) for line in f.readlines()]
         runy = dict(lines)
-    assert len(run0) == len(runy), 'inconsistent length'
+    assert len(run0) == len(runy), f'inconsistent length, len(run0) and len(runy)'
 
     turn_results=[]
     for qid in run0.keys():
@@ -27,13 +27,15 @@ def analyze_by_turn(args):
         scorex = float(runx[qid])
         scorey = float(runy[qid])
         turn_results.append([
-            turn, scorex-score0, scorey-score0
+            turn, scorex, scorey
+            # turn, scorex-score0, scorey-score0
             # turn, int(scorex-score0>0), int(scorey-score0>0)
         ])
 
     df = pd.DataFrame(turn_results, columns=['turn', 'x-0 (monot5)', 'y-0 (convrerank)'])
     df = df.groupby('turn').agg(['mean', 'count'])
     print(df)
+    print("Total judged queries:", df['x-0 (monot5)']['count'].sum())
     return df
 
 if __name__ == '__main__':
