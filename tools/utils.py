@@ -1,3 +1,4 @@
+from tqdm import tqdm
 import json
 import argparse
 import random
@@ -16,7 +17,7 @@ def normalized(x):
 def load_topics(path):
     data_dict = {}
     with open(path, 'r') as f:
-        for line in f:
+        for line in tqdm(f):
             data = json.loads(line.strip())
             topic_turn_id = data.pop('id')
             data_dict[topic_turn_id] = data
@@ -25,12 +26,12 @@ def load_topics(path):
 def load_runs(path, output_score=False): # support .trec file only
     run_dict = collections.defaultdict(list)
     with open(path, 'r') as f:
-        for line in f:
+        for line in tqdm(f):
             qid, _, docid, rank, score, _ = line.strip().split()
             run_dict[qid] += [(docid, float(rank), float(score))]
 
     sorted_run_dict = collections.OrderedDict()
-    for (qid, doc_id_ranks) in run_dict.items():
+    for (qid, doc_id_ranks) in tqdm(run_dict.items()):
         sorted_doc_id_ranks = \
                 sorted(doc_id_ranks, key=lambda x: x[1], reverse=False) # score with descending order
         if output_score:

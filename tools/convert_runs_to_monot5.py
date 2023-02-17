@@ -39,6 +39,7 @@ def convert_runs_to_monot5(args):
     # output examples (to be inferenced)
     with open(args.output, 'w') as f:
         for data in tqdm(dataset):
+            # conversational utterances
             if args.conversational: 
                 if len(data['context'])>0:
                     sep_token = " <extra_id_10> "
@@ -46,9 +47,12 @@ def convert_runs_to_monot5(args):
                     example = f"Query: {data['utterance']} Context: {context} Document: {data['passage']} Relevant:"
                 else:
                     example = f"Query: {data['utterance']} Document: {data['passage']} Relevant:"
+            # manual rewritten query
+            elif 'manual' in args.run:
+                example = f"Query: {data['manual']} Document: {data['passage']} Relevant:"
+            # automatci rewritten query
             else:
-                query_input = data[f'args.query_input']
-                example = f"Query: {query_input} Document: {data['passage']} Relevant:"
+                example = f"Query: {data['rewrite']} Document: {data['passage']} Relevant:"
             f.write(example+'\n')
 
 
@@ -59,7 +63,6 @@ if __name__ == '__main__':
     parser.add_argument("--run", type=str, required=True,)
     parser.add_argument("--topics", type=str, required=True,)
     parser.add_argument("--collection", type=str, required=True,)
-    parser.add_argument("--query_input", type=str, default='rewrite')
     # Reranking conditions
     parser.add_argument("--output", type=str, default="")
     # Conversataion conditions

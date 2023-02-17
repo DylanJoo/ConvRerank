@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import argparse
-import time
 import json
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from utils import load_collections

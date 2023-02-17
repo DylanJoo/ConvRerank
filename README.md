@@ -56,37 +56,31 @@ python3 tools/construct_convir_dataset.py \
   --run0 runs/cast20.canard.train.view0.monot5.top1000.trec \
   --run1 runs/cast20.canard.train.view1.monot5.top1000.trec \
   --output data/canard4ir/canard4ir.train.convrerank.txt \
-  --window_size 3 \
   --topk_pool 200 \
-  --topk_positive 3 \
-  --n 30 \
+  --topk_positive 20 \
+  --n 20 \
 ```
 2. Training with the weakly-supervsied dataset using TPU or GPU
 See the [T5_TPU_README.md](T5_TPU_README.md) for detail.
 
-## Evaluation on CAsT 2020
+## Evaluation on CAsT 2020 (eval)
 1. Download CAsT 2020
-You may find out the download instructions (with preprocessing) in the [official CAsT repo](#).
-Then, parse the evaluation topics into jsonl. You should have the following three files.
-- Qrels (already in this repo)
-- Collections (MARCO, TRECCR)
-```
-# We need to parase the trecweb form into jsonl (already in this repo)
-python3 tools/parse_cast2020.py
-```
+The evaluation files are processed and parsed from original CAsT'20 repositary, in [data/cast2020](data/cast2020/)
+You can also download from the [official CAsT repo](#), and follow our processing pipeline.
 2. First-stage retrieval using CQE
-We have inferenced several dense retrieval baseline in this repo, including the top1000 passage ranklist which are in [cast2020 runs](runs/cast2020/)
+The dense retrieval results are in this repo, including the top1000 passage ranklist which are in [runs/cast2020](runs/cast2020/)
 3. Convert the runs into monot5 input
 ```
 python3 tools/convert_runs_to_monot5.py \
   --run <run file> \
-  --topic data/canard/train.jsonl \ # the parsed topic files previously.
+  --topic data/cast2020/cast2020.eval.jsonl \ 
   --collection <corpus path> \
   --output monot5/cast2020.eval.cqe.conv.rerank.txt 
   --conversational
 ```
-4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [bucket](#).
-- monot5-base-canard4ir-10k
+4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [Google bucket](#).
+- monot5-large-canard4ir-20k
+- monot5-base-canard4ir-20k
 
 ## Evaluation on CAsT 2019
 1. Download CAsT 2019
@@ -104,7 +98,7 @@ We have inferenced several dense retrieval baseline in this repo, including the 
 ```
 python3 tools/convert_runs_to_monot5.py \
   --run <run file> \
-  --topic data/canard/train.jsonl \ # the parsed topic files previously.
+  --topic data/cast2020/cast2020.eval.jsonl \ 
   --collection <corpus path> \
   --output monot5/cast2019.eval.cqe.conv.rerank.txt 
   --conversational
