@@ -97,11 +97,11 @@ for model_size in large 3B;do
         --prefix monot5 
 done
 
-echo 'Run, nDCG@3, nDCG@5, nDCG@10, nDCG@100'
+echo 'Run, nDCG@3,nDCG@100'
 for run in runs/cast2020/*eval*.trec;do
     echo -n ${run##*cast2020.}','
     ./trec_eval-9.0.7/trec_eval \
-        -c -m ndcg_cut.3,5,10,100 \
+        -c -m ndcg_cut.3,100 \
         data/cast2020/2020qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
 done
 echo 'Run, Recall@100'
