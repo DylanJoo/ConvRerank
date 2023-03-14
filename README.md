@@ -1,10 +1,16 @@
-# Weakly-supervised training data
+# Improving Conversational Passage Re-ranking with View Ensemble
+
+This repositary includes
+1. Step1-rerank: Retrieve and re-rank the passage with two views.
+2. Proposed pseudo labeling: Create the pseudo-labels for CANARD dataset based on the view-ensemble ranked list.
+3. Train conversational passage re-ranker
+4. Evaluation on TREC CAsT 2019 and 2020.
+---
 
 ## Step1-rerank
 In this step, we need to generate three views of ranked list based on 
 0. Manually reformulated query
 1. Manually reformulated query + ANswer
-x. Utterance
 
 ### Raw training data 
 1. Download canard dataset (training set)
