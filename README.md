@@ -9,8 +9,9 @@ This repositary includes
 
 ## Step1-rerank
 In this step, we need to generate three views of ranked list based on 
-0. Manually reformulated query
-1. Manually reformulated query + ANswer
+
+1. Manually reformulated query(CANARD)
+2. Manually reformulated query(CANARD) + Answer (QuAC)
 
 ### Raw training data 
 1. Download canard dataset (training set)
