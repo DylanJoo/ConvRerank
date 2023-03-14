@@ -94,34 +94,30 @@ You may find out the download files in [official CAsT repo](#)
 Then, parse the evaluation topics into jsonl.
 - Qrels (already in this repo)
 - Collections (MARCO, TRECCAR, WAPO)
-```
-# We need to parase the trecweb form into jsonl (already in this repo)
-python3 tools/parse_cast2019.py
-```
 2. First-stage retrieval using CQE
 We have inferenced several dense retrieval baseline in this repo, including the top1000 passage ranklist which are in [cast2019 runs](runs/cast2019/)
 3. Convert the runs into monot5 input
 ```
 python3 tools/convert_runs_to_monot5.py \
   --run <run file> \
-  --topic data/cast2020/cast2020.eval.jsonl \ 
+  --topic data/cast2019/cast2019.eval.jsonl \ 
   --collection <corpus path> \
   --output monot5/cast2019.eval.cqe.conv.rerank.txt 
   --conversational
 ```
 4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [bucket](#).
 - monot5-base-canard4ir-10k
+- monot5-large-canard4ir-20k
 
-pathon3 tools/parse_cast2019.py
-```
-## Note
+
+## GCP settings recommendation
+
 To admit the google account in the local boto and gcloud authentication.
-
 ```
 remove the old boto folder, which contained the previous credecential
 rm ~/.boto
 
 # new a config of glcoud by the commands
-
+....TBD
 ```
 
