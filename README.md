@@ -86,8 +86,8 @@ python3 tools/convert_runs_to_monot5.py \
   --conversational
 ```
 4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [Google bucket](#).
-- monot5-large-canard4ir-20k
-- monot5-base-canard4ir-20k
+- monot5-large-canard4ir
+- monot5-base-canard4ir
 
 ## Evaluation on CAsT 2019
 1. Download CAsT 2019
@@ -107,18 +107,6 @@ python3 tools/convert_runs_to_monot5.py \
   --conversational
 ```
 4. Predicted the relevance scores using fine-tuned t5. You can see our checkpoint at [bucket](#).
-- monot5-base-canard4ir-10k
-- monot5-large-canard4ir-20k
-
-
-## GCP settings recommendation
-
-To admit the google account in the local boto and gcloud authentication.
-```
-remove the old boto folder, which contained the previous credecential
-rm ~/.boto
-
-# new a config of glcoud by the commands
-....TBD
-```
+- monot5-base-canard4ir
+- monot5-large-canard4ir
 
