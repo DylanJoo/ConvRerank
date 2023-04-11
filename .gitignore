@@ -13,7 +13,6 @@ monot5-probs/
 
 #run
 runs/rerank_step1
-runs/archived
 
 #compile and logging
 __pycache__/
