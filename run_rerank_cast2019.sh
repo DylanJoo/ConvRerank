@@ -105,45 +105,11 @@ for run in runs/cast2019/*eval*.trec;do
         data/cast2019/2019qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
 done
 
-echo 'Run, Recall@100'
-for first_stage in hqe cqe cqe-hybrid manual.dpr;do
-    run=runs/cast2019/cast2019.eval.$first_stage.trec
-    echo -n $first_stage','
-    ./trec_eval-9.0.7/trec_eval -c \
-        -m recall.100 \
-        data/cast2019/2019qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
-done
-
-# train set
-# python3 tools/rerank_runs.py \
-#     --baseline runs/cast2019/cast2019.train.cqe.trec \
-#     --scores monot5-probs/rerank_cast2019/ablation_train/cast2019.train.cqe.rerank.txt.probs \
-#     --reranked runs/cast2019/cast2019.train.cqe.rerank.trec \
-#     --topk 100 \
-#     --prefix monot5 
-# # Main-A: Convrerank
-# for topk in t10 t20 t30 t40 t50 t100;do
-#     python3 tools/rerank_runs.py \
-#         --baseline runs/cast2019/cast2019.train.cqe.trec \
-#         --scores monot5-probs/rerank_cast2019/ablation_train/cast2019.train.cqe.conv.rerank.$topk.txt.probs \
-#         --reranked runs/cast2019/cast2019.train.cqe.conv.rerank.$topk.trec \
-#         --topk 100 \
-#         --prefix conv-monot5 
-# done
-#
-# for step in 1110100 1120200 1130300 1140400 150000;do
-#     python3 tools/rerank_runs.py \
-#         --baseline runs/cast2019/cast2019.train.cqe.trec \
-#         --scores monot5-probs/rerank_cast2019/ablation_train/cast2019.train.cqe.conv.rerank.t40-$step.txt.probs \
-#         --reranked runs/cast2019/cast2019.train.cqe.conv.rerank.t40-$step.trec \
-#         --topk 100 \
-#         --prefix conv-monot5 
-# done
-
-# echo 'Run, nDCG@3, nDCG@5, nDCG@10, nDCG@100'
-# for run in runs/cast2019/*train*.trec;do
-#     echo -n ${run##*cast2019.}','
-#     ./trec_eval-9.0.7/trec_eval \
-#         -c -m ndcg_cut.3,5,10,100 \
-#         data/cast2019/train_topics_mod.qrel $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
+# echo 'Run, Recall@100'
+# for first_stage in hqe cqe cqe-hybrid manual.dpr;do
+#     run=runs/cast2019/cast2019.eval.$first_stage.trec
+#     echo -n $first_stage','
+#     ./trec_eval-9.0.7/trec_eval -c \
+#         -m recall.100 \
+#         data/cast2019/2019qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
 # done

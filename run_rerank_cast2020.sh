@@ -104,11 +104,12 @@ for run in runs/cast2020/*eval*.trec;do
         -c -m ndcg_cut.3,100 \
         data/cast2020/2020qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
 done
-echo 'Run, Recall@100'
-for first_stage in hqe cqe cqe-hybrid manual.dpr;do
-    run=runs/cast2020/cast2020.eval.$first_stage.trec
-    echo -n $first_stage','
-    ./trec_eval-9.0.7/trec_eval -c \
-        -m recall.100 \
-        data/cast2020/2020qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
-done
+
+# echo 'Run, Recall@100'
+# for first_stage in hqe cqe cqe-hybrid manual.dpr;do
+#     run=runs/cast2020/cast2020.eval.$first_stage.trec
+#     echo -n $first_stage','
+#     ./trec_eval-9.0.7/trec_eval -c \
+#         -m recall.100 \
+#         data/cast2020/2020qrels.txt $run | cut -f3 | sed ':a; N; $!ba; s/\n/,/g'
+# done
